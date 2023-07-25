@@ -1,0 +1,103 @@
+import time
+
+
+def deposito(txt):
+    while True:
+        try:
+            while True:
+                print('CONTA BANCARIA')
+                print('Realizar depósito')
+                novo_deposito = float(input(txt))
+                if novo_deposito > 0:
+                    extrato.append(novo_deposito)
+                    print(f'\33[1;34mDepósito realizado com sucesso no valor de R$ {novo_deposito:.2f}.\33[m')
+                    print(f'Saldo atual da conta: R$ {sum(extrato):.2f}')
+                    while True:
+                        continua = str(input('Deseja realizar um novo depósito? [S/N] ')).strip().upper()
+                        if continua[0] in 'SN':
+                            break
+                    if continua[0] == 'S':
+                        print('------Realizando novo depósito------')
+                    if continua[0] == 'N':
+                        print(f'Depósito finalizado com sucesso! Seu saldo é R$ {sum(extrato):.2f}.')
+                        print('Até logo')
+                        print('-' * 40)
+                        break
+                if novo_deposito <= 0:
+                    print(f'ERRO! O depósito de {novo_deposito} não é válido.')
+        except:
+           print('\n')
+           continue
+        else:
+            break
+
+def saque(txt):
+    print('Realizar saque')
+    if sum(extrato) > 0:
+        while True:
+            novo_saque = float(input(txt))
+            if sum(histórico_saque) < 3:
+                if novo_saque > (sum(extrato)):
+                    print(f'\33[1;31mSeu saldo é apenas de R$ {sum(extrato)}.\33[m')
+                if sum(extrato) >= novo_saque > 500:
+                    print('\33[1;31mSaque acima de R$ 500,00 não são permitidos.\33[m')
+                if novo_saque <= sum(extrato) and 0 < novo_saque <= 500:
+                    extrato.append(novo_saque*-1)
+                    histórico_saque.append(1)
+                    print(f'\33[1;31mSaque realizado de R$ {novo_saque:.2f}.\33[m')
+                    print(f'\33[0;30;34mSaldo: R$ {sum(extrato):.2f}\33[m')
+                    if sum(histórico_saque) < 3:
+                        while True:
+                            continuar = str(input('Deseja realizar um novo saque? [S/N]' )).strip().upper()
+                            if continuar[0] in 'SN':
+                                break
+                    else:
+                        continuar[0] == 'N'
+                        print('\33[1;31mExcedido o número de saques diários.\33[m')
+                    if continuar[0] == 'N':
+                        print('Saque finalizado! Até logo.')
+                        print(f'Saldo da conta: R$ {sum(extrato):.2f}.')
+                        break
+            if sum(histórico_saque) == 3:
+                print(f'\33[1;31mJá foram realizados {sum(histórico_saque)} saques.\33[m')
+                print('Finalizado.')
+                print('-'*40)
+                break
+    else:
+        print('\33[1;31mVoçê esta sem saldo na conta!\33[m')
+        print('~'*40)
+    time.sleep(5)
+
+def lerextrato():
+    print('\33[4;31;40m  EXTRATO DA CONTA BANCARIA  \33[m')
+    for o in extrato:
+        if o < 0:
+            print(f'Saque ------ \33[1;31mR$ {o * (-1):.2f}\33[m')
+        if o > 0:
+            print(f'Depósito --- R$ {o:.2f}')
+    print(f'\33[1;32mSaldo ------ R$ {sum(extrato):.2f}\33[m')
+    time.sleep(5)
+
+
+extrato = []
+histórico_saque = []
+
+while True:
+    try:
+        print('~'*40)
+        print('Bem vindo a sua conta bancária')
+        print('~'*40)
+        x = int(input('\33[1;32;40m    Menu    \33[m\n 1-Deposito\n 2-Saque\n 3-extrato\n 4-Sair\n ---> '))
+        if x == 1:
+            deposito('Valor do deposito: R$ ')
+        if x == 2:
+            saque('Valor do saque: R$ ')
+        if x == 3:
+            lerextrato()
+        if x == 4:
+            print("Finalizando...")
+            time.sleep(2)
+            print('---Até logo---')
+            break
+    except:
+        continue
